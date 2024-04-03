@@ -1,4 +1,4 @@
-module github.com/KootuckB/hw03_frequency_analysis
+module github.com/Kootuck/otus-go-hw/hw03_frequency_analysis
 
 go 1.21
 
