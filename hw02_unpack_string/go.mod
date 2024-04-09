@@ -1,4 +1,4 @@
-module github.com/kootuck/hw02_unpack_string
+module github.com/Kootuck/otus-go-hw/hw02_unpack_string
 
 go 1.21
 
