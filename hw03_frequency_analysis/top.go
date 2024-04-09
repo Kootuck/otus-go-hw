@@ -18,6 +18,9 @@ type keyValue struct {
 
 func Top10(input string) []string {
 	var sortedWordsResult []string
+	if input == "" {
+		return sortedWordsResult
+	}
 	// 0. input string -> slice of words
 	words := strings.Fields(input)
 	// 1. Sanitize words
@@ -31,7 +34,7 @@ func Top10(input string) []string {
 		return sortedWordsResult
 	}
 
-	return sortedWordsResult[:10]
+	return sortedWordsResult
 }
 
 func sortWords(input map[string]int) []string {
@@ -50,9 +53,9 @@ func sortWords(input map[string]int) []string {
 		return wordCount[i].count > wordCount[j].count
 	})
 
-	result := make([]string, len(wordCount))
-	for i, wordCountElem := range wordCount {
-		result[i] = wordCountElem.word
+	result := make([]string, 10)
+	for i := 0; i < len(result); i++ {
+		result[i] = wordCount[i].word
 	}
 
 	return result
