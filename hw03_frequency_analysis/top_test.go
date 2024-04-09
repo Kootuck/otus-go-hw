@@ -1,4 +1,4 @@
-package hw03frequencyanalysis
+package main
 
 import (
 	"testing"
@@ -7,7 +7,7 @@ import (
 )
 
 // Change to true if needed.
-var taskWithAsteriskIsCompleted = false
+var taskWithAsteriskIsCompleted = true
 
 var text = `Как видите, он  спускается  по  лестнице  вслед  за  своим
 	другом   Кристофером   Робином,   головой   вниз,  пересчитывая
@@ -78,5 +78,20 @@ func TestTop10(t *testing.T) {
 			}
 			require.Equal(t, expected, Top10(text))
 		}
+	})
+
+	t.Run("negative test", func(t *testing.T) {
+		input := `Lorem ipsum dolor sit amet, !@#$% adipiscing elit, 
+		sed do eiusmod tempor incididunt ut !@#$^ et dolore magna aliqua. 
+		Ut enim ad minim veniam, quis nostrud !!@@@## ullamco 
+		laboris nisi ut aliquip ex ea ǥǬ㐊Ǥஇ . 
+		Duis aute irure dolor in ௗǤǥǬǬ in voluptate velit 
+		esse cillum dolore eu ǬǥǥௗÒ nu!@#$%lla pariatur. 
+		Excepteur !@#$% !@#$% cupidatat non proident, 
+		sunt in culpa qui officia deserunt mollit anim id est laborum.`
+
+		expected := []string{"in", "ut", "dolor", "dolore", "ad", "adipiscing", "aliqua", "aliquip", "amet", "anim"}
+
+		require.Equal(t, expected, Top10(input))
 	})
 }
