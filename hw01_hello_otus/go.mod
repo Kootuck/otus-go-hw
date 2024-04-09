@@ -1,4 +1,4 @@
-module github.com/kootuck/hw01_hello_otus
+module github.com/Kootuck/otus-go-hw/hw01_hello_otus
 
 go 1.21
 
