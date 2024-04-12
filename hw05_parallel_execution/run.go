@@ -14,15 +14,12 @@ func Run(tasks []Task, n, m int) error {
 	// 0. Инит
 	var errCount int32
 	var wg sync.WaitGroup
-	var numWorkers int
+	numWorkers := n
 
-	if n > len(tasks) {
+	if numWorkers > len(tasks) {
 		numWorkers = len(tasks)
-	} else {
-		numWorkers = n
 	}
 
-	// work := make(chan func() error, numWorkers)
 	work := make(chan Task)
 	errs := make(chan error, len(tasks))
 	done := make(chan struct{})
@@ -32,6 +29,7 @@ func Run(tasks []Task, n, m int) error {
 			close(done)
 		}
 	}()
+
 	// 1. Создать n обработчиков заданий.
 	for i := 0; i < numWorkers; i++ {
 		wg.Add(1)
@@ -44,12 +42,8 @@ loop:
 	for _, t := range tasks {
 		select {
 		case <-done:
-		default:
-			select {
-			case <-done:
-				break loop
-			case work <- t:
-			}
+			break loop
+		case work <- t:
 		}
 	}
 	// 4. Закрываем канал задач, ждем завершения и выходим.
@@ -79,16 +73,10 @@ func worker(work <-chan Task, errs chan<- error, wg *sync.WaitGroup) {
 		wg.Done()
 	}()
 
-	for {
-		t, ok := <-work
-		if ok {
-			err := t()      // Получили задачу, выполняем.
-			if err != nil { // Ошибка - передать в канал ошибок.
-				errs <- err
-			}
-		}
-		if !ok { // канал был закрыт или больше нет работы.
-			return
+	for t := range work {
+		err := t()      // Получили задачу, выполняем.
+		if err != nil { // Ошибка - передать в канал ошибок.
+			errs <- err
 		}
 	}
 }
@@ -100,7 +88,7 @@ func errorCountThresholdObserver(errs <-chan error, done chan<- struct{}, errCou
 			atomic.AddInt32(errCount, 1)
 		}
 		if maxErrors > 0 {
-			if *errCount >= int32(maxErrors) {
+			if atomic.LoadInt32(errCount) >= int32(maxErrors) {
 				close(done)
 				return
 			}
