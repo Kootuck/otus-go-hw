@@ -38,7 +38,7 @@ func (l *list) Back() *ListItem {
 }
 
 func (l *list) PushFront(v interface{}) *ListItem {
-	newListItem := &ListItem{Value: v, Next: nil, Prev: nil}
+	newListItem := &ListItem{Value: v}
 
 	if l.First == nil && l.Last == nil {
 		l.pushFirstItem(newListItem)

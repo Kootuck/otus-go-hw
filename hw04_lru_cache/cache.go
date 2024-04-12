@@ -43,10 +43,10 @@ func (lc *lruCache) Set(key Key, value interface{}) bool {
 	//  если элемента нет в словаре, то добавить в словарь и в начало очереди
 	// (если превышена ёмкость кэша, то удалить последний элемент из очереди и из словаря);
 	if !exists {
-		lc.items[key] = lc.queue.PushFront(KeyValue{Key: key, Value: value})
-		if lc.queue.Len() > lc.capacity {
+		if lc.queue.Len() == lc.capacity {
 			lc.removeLastElement()
 		}
+		lc.items[key] = lc.queue.PushFront(KeyValue{Key: key, Value: value})
 	}
 
 	// если элемент присутствует в словаре, то обновить его значение и переместить элемент в начало очереди
