@@ -2,6 +2,8 @@ package main
 
 import (
 	"flag"
+	"fmt"
+	"os"
 )
 
 var (
@@ -18,5 +20,27 @@ func init() {
 
 func main() {
 	flag.Parse()
-	// Place your code here.
+
+	if from == "" {
+		fmt.Println("error: from is required")
+		os.Exit(1)
+	}
+	if to == "" {
+		fmt.Println("error: to is required")
+		os.Exit(1)
+	}
+	if offset < 0 {
+		fmt.Println("error: offset must be non-negative")
+		os.Exit(1)
+	}
+	if limit < 0 {
+		fmt.Println("error: limit must be non-negative")
+		os.Exit(1)
+	}
+	fmt.Println("DoCopy args=", from, to, offset, limit)
+	err := Copy(from, to, offset, limit)
+	if err != nil {
+		fmt.Println("error:", err)
+		os.Exit(1)
+	}
 }
