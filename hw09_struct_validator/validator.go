@@ -71,7 +71,7 @@ func (v StringValidation) Validate() ValidationError {
 		r, _ := regexp.Compile(condition)
 		ok := r.MatchString(v.Value)
 		if !ok {
-			ret.Error = NewStringRegExpError(condition)
+			ret.Error = NewStringRegExpError(condition, v.Value)
 		}
 
 	case StringAllowedValues:

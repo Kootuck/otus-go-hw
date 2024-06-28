@@ -57,14 +57,15 @@ func (e *StringLengthError) Is(target error) bool {
 // 1.2. String must match regexp.
 type StringRegExpError struct {
 	Regexp string
+	Fact   string
 }
 
-func NewStringRegExpError(r string) error {
-	return &StringRegExpError{Regexp: r}
+func NewStringRegExpError(r, v string) error {
+	return &StringRegExpError{Regexp: r, Fact: v}
 }
 
 func (e *StringRegExpError) Error() string {
-	return fmt.Sprintf("string must match with regexp %s", e.Regexp)
+	return fmt.Sprintf("string \"%s\" must match regexp %s", e.Fact, e.Regexp)
 }
 
 func (e *StringRegExpError) Is(target error) bool {

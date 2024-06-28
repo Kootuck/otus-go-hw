@@ -17,7 +17,7 @@ type (
 		Age    int             `validate:"min:18|max:50"`
 		Email  string          `validate:"regexp:^\\w+@\\w+\\.\\w+$"`
 		Role   UserRole        `validate:"in:admin,stuff"`
-		Phones []string        `validate:"len:11"`
+		Phones []string        `validate:"len:11|regexp:^[0-9]+$"`
 		meta   json.RawMessage //nolint:unused
 	}
 
@@ -74,7 +74,7 @@ var tests = []struct {
 		expectedErr: ValidationErrors{
 			ValidationError{Field: "ID", Error: NewStrictStringLengthError(3, 36)},
 			ValidationError{Field: "Age", Error: NewIntMustBeLargerThanError(18, 15)},
-			ValidationError{Field: "Email", Error: NewStringRegExpError("invalid")},
+			ValidationError{Field: "Email", Error: NewStringRegExpError("^\\w+@\\w+\\.\\w+$", "invalid")},
 			ValidationError{Field: "Role", Error: NewStringNotAllowedError("invalid", "admin, stuff")},
 			ValidationError{Field: "Phones", Error: NewStrictStringLengthError(12, 11)},
 		},
@@ -92,7 +92,7 @@ var tests = []struct {
 		expectedErr: ValidationErrors{
 			ValidationError{Field: "ID", Error: NewStrictStringLengthError(0, 36)},
 			ValidationError{Field: "Age", Error: NewIntMustBeLowerThanError(50, 51)},
-			ValidationError{Field: "Email", Error: NewStringRegExpError("")},
+			ValidationError{Field: "Email", Error: NewStringRegExpError("^\\w+@\\w+\\.\\w+$", "")},
 			ValidationError{Field: "Role", Error: NewStringNotAllowedError("", "admin, stuff")},
 		},
 	},
