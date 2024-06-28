@@ -260,9 +260,8 @@ func getFieldValueStr(val interface{}) (string, error) {
 	default:
 		if str, ok := v.(string); ok {
 			return str, nil
-		} else {
-			return "", errors.New("not able to interpret as a string")
 		}
+		return "", errors.New("not able to interpret as a string")
 	}
 }
 
