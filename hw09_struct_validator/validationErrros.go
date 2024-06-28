@@ -33,8 +33,8 @@ func (e ProgramError) Error() string {
 	return e.Msg
 }
 
-// 1. validaton errors -> strings
-// 1.1 String must be exactly N characters
+// 1. validaton errors -> STRINGS.
+// 1.1 String must be exactly N characters.
 type StringLengthError struct {
 	Expected int
 	Fact     int
@@ -54,7 +54,7 @@ func (e *StringLengthError) Is(target error) bool {
 	return ok && e.Expected == sErr.Expected && e.Fact == sErr.Fact
 }
 
-// 1.2. String must match regexp
+// 1.2. String must match regexp.
 type StringRegExpError struct {
 	Regexp string
 }
@@ -72,7 +72,7 @@ func (e *StringRegExpError) Is(target error) bool {
 	return errors.As(target, &sErr)
 }
 
-// 1.3. String must be one of the predefined values
+// 1.3. String must be one of the predefined values.
 type StringNotAllowedError struct {
 	Allowed string
 	Fact    string
@@ -91,8 +91,8 @@ func (e *StringNotAllowedError) Is(target error) bool {
 	return errors.As(target, &sErr)
 }
 
-// 2. validaton errors -> ints
-// 2.1. Lower bound for int field
+// 2. validaton errors -> INT
+// 2.1. Lower bound for int field.
 type IntMustBeLargerThanError struct {
 	Expected int
 	Fact     int
@@ -112,7 +112,7 @@ func (e *IntMustBeLargerThanError) Is(target error) bool {
 	return ok && e.Expected == sErr.Expected && e.Fact == sErr.Fact
 }
 
-// 2.2. Upper bound for int field
+// 2.2. Upper bound for int field.
 type IntMustBeLowerThanError struct {
 	Expected int
 	Fact     int
@@ -132,7 +132,7 @@ func (e *IntMustBeLowerThanError) Is(target error) bool {
 	return ok && e.Expected == sErr.Expected && e.Fact == sErr.Fact
 }
 
-// 2.3. Int must be one of the predefined values
+// 2.3. Int must be one of the predefined values.
 type IntNotAllowedError struct {
 	Allowed []string
 	Fact    int
