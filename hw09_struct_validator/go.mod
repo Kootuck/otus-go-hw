@@ -1,3 +1,3 @@
-module github.com/Kootuck/hw09_struct_validator
+module github.com/Kootuck/otus-go-hw/hw09_struct_validator
 
 go 1.21

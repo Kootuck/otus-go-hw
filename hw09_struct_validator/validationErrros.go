@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"strconv"
+	"strings"
 )
 
 type ValidationError struct {
@@ -14,11 +15,12 @@ type ValidationError struct {
 type ValidationErrors []ValidationError
 
 func (v ValidationErrors) Error() string {
-	acc := "validation erros: " + strconv.Itoa(len(v))
+	var sb strings.Builder
+	sb.WriteString("validation erros count: " + strconv.Itoa(len(v)))
 	for i, e := range v {
-		acc += fmt.Sprintf("\n%d. validation error in field %s: %v", i, e.Field, e.Error)
+		sb.WriteString(fmt.Sprintf("\n%d. validation error in field %s: %v", i, e.Field, e.Error))
 	}
-	return acc
+	return sb.String()
 }
 
 func (v ValidationError) IsError() bool {

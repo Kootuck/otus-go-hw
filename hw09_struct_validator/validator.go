@@ -80,6 +80,7 @@ func (v StringValidation) Validate() ValidationError {
 		for _, allowed := range splitted {
 			if strings.TrimSpace(allowed) == v.Value {
 				found = true
+				break
 			}
 		}
 		if !found {
