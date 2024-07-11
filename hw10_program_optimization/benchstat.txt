@@ -1,0 +1,15 @@
+goos: darwin
+goarch: amd64
+pkg: github.com/Kootuck/otus-go-hw/hw10_program_optimization
+cpu: Intel(R) Core(TM) i7-1068NG7 CPU @ 2.30GHz
+                │ before.txt  │             after.txt              │
+                │   sec/op    │   sec/op     vs base               │
+GetDomainStat-8   551.0m ± 3%   192.3m ± 5%  -65.10% (p=0.001 n=7)
+
+                │  before.txt   │              after.txt              │
+                │     B/op      │     B/op      vs base               │
+GetDomainStat-8   308.81Mi ± 0%   12.84Mi ± 0%  -95.84% (p=0.001 n=7)
+
+                │  before.txt  │             after.txt              │
+                │  allocs/op   │  allocs/op   vs base               │
+GetDomainStat-8   3146.5k ± 0%   702.1k ± 0%  -77.69% (p=0.001 n=7)
