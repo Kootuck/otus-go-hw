@@ -52,15 +52,20 @@ func TestGetDomainStat_Time_And_Memory(t *testing.T) {
 
 func BenchmarkGetDomainStat(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		b.StopTimer() // begin of setup 
+		b.StopTimer() // begin of setup
 		r, err := zip.OpenReader("testdata/users.dat.zip")
 		require.NoError(b, err)
 		require.Equal(b, 1, len(r.File))
 		data, err := r.File[0].Open()
 		require.NoError(b, err)
-		b.StartTimer() // end of setup 
+		b.StartTimer() // end of setup
 
 		stat, err := GetDomainStat(data, "biz")
+
+		b.StopTimer()
+		r.Close()
+		b.StartTimer()
+
 		require.NoError(b, err)
 		require.Equal(b, expectedBizStat, stat)
 	}
