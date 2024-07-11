@@ -36,17 +36,16 @@ func getUsers(r io.Reader) (u users, err error) {
 	var i int
 	for scanner.Scan() {
 		var user User
-		if er := easyjson.Unmarshal(scanner.Bytes(), &user); err != nil {
-			err = fmt.Errorf("umarshalling error: %w", er)
-			return
+		if err := easyjson.Unmarshal(scanner.Bytes(), &user); err != nil {
+			return u, fmt.Errorf("umarshalling error: %w", err)
 		}
 		u[i] = user
 		i++
 	}
 	if scanner.Err() != nil {
-		err = fmt.Errorf("read file error: %w", err)
+		return u, fmt.Errorf("read file error: %w", err)
 	}
-	return
+	return u, nil
 }
 
 func countDomains(u users, domain string) (DomainStat, error) {

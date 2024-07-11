@@ -8,6 +8,15 @@ linters-settings:
   funlen:
     lines: 150
     statements: 80
+  depguard:
+    rules:
+      allow_testify_for_test:
+        files:
+          - $test"
+        allow:
+          - $gostd
+          - github.com/stretchr/testify
+        listMode: "Strict"
 
 issues:
   exclude-rules:
@@ -19,7 +28,7 @@ issues:
         - gosec
 
 linters:
-  disable-all: true
+  disable-all: false
   enable:
     - asciicheck
     - bodyclose
@@ -65,3 +74,10 @@ linters:
     - unparam
     - unused
     - whitespace
+settings:
+  depguard:
+    list-type: whitelist
+    packages:
+      - github.com/stretchr/testify/require
+
+
