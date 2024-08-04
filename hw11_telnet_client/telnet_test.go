@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"errors"
 	"io"
 	"net"
 	"sync"
@@ -62,4 +63,28 @@ func TestTelnetClient(t *testing.T) {
 
 		wg.Wait()
 	})
+
+	t.Run("fails to connect", func(t *testing.T) {
+		in := &bytes.Buffer{}
+		out := &bytes.Buffer{}
+		client := NewTelnetClient("localhost:4242", 0, in, out)
+		err := client.Connect()
+		require.True(t, errors.Is(err, ErrFailedToConnect))
+	})
+}
+
+func TestConnectionTimeout(t *testing.T) {
+	client := TelnetClientImpl{
+		address: "192.0.2.1:80",
+		timeout: 1000 * time.Millisecond,
+	}
+
+	startTime := time.Now()
+	err := client.Connect()
+	duration := time.Since(startTime)
+
+	require.Error(t, err)
+	require.Less(t, duration, 1100*time.Millisecond)
+	require.Greater(t, duration, 1000*time.Millisecond)
+	t.Log("Duration:", duration)
 }
