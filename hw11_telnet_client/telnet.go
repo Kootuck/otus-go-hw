@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"net"
+	"os"
 	"time"
 )
 
@@ -51,7 +52,6 @@ func (t *TelnetClientImpl) Close() error {
 		if err != nil {
 			return fmt.Errorf("failed to close connection: %w", err)
 		}
-		fmt.Println("Connection closed (client)")
 	}
 	return nil
 }
@@ -59,7 +59,7 @@ func (t *TelnetClientImpl) Close() error {
 func (t *TelnetClientImpl) Send() error {
 	_, err := io.Copy(t.conn, t.in)
 	if err != nil {
-		return fmt.Errorf("error copying from stdin to conn: %w", err)
+		return fmt.Errorf("error -> send: %w", err)
 	}
 	return nil
 }
@@ -67,7 +67,7 @@ func (t *TelnetClientImpl) Send() error {
 func (t *TelnetClientImpl) Receive() error {
 	_, err := io.Copy(t.out, t.conn)
 	if err != nil {
-		return fmt.Errorf("error copying from conn to stdout: %w", err)
+		return fmt.Errorf("error -> receive: %w", err)
 	}
 	return nil
 }
@@ -76,6 +76,7 @@ func (t *TelnetClientImpl) SetDeadline(ctx context.Context) {
 	go func() {
 		<-ctx.Done()
 		if t.conn != nil {
+			fmt.Fprintf(os.Stderr, "Connection terminated by client...\n")
 			t.conn.SetDeadline(time.Now()) // Forces io.Copy to return.
 		}
 	}()
