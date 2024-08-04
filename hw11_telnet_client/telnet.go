@@ -41,7 +41,7 @@ func (t *TelnetClientImpl) Connect() error {
 	t.conn, err = net.DialTimeout("tcp", t.address, t.timeout)
 	if err != nil {
 		wrapped := fmt.Errorf("net: %w", err)
-		return fmt.Errorf("%w: %v", ErrFailedToConnect, wrapped) 
+		return fmt.Errorf("%w: %v", ErrFailedToConnect, wrapped)
 	}
 	return nil
 }
