@@ -2,25 +2,26 @@ package app
 
 import (
 	"context"
+
+	//nolint:depguard
+	"github.com/Kootuck/otus-go-hw/hw12_13_14_15_calendar/internal/logger"
+	//nolint:depguard
+	"github.com/Kootuck/otus-go-hw/hw12_13_14_15_calendar/internal/storage"
 )
 
-type App struct { // TODO
+type App struct {
+	Storage storage.EventStorage
+	Logger  *logger.Logger
 }
 
-type Logger interface { // TODO
-}
-
-type Storage interface { // TODO
-}
-
-func New(logger Logger, storage Storage) *App {
-	return &App{}
+func New(logger *logger.Logger, storage storage.EventStorage) *App {
+	return &App{
+		Storage: storage,
+		Logger:  logger,
+	}
 }
 
 func (a *App) CreateEvent(ctx context.Context, id, title string) error {
-	// TODO
-	return nil
-	// return a.storage.CreateEvent(storage.Event{ID: id, Title: title})
+	_ = ctx
+	return a.Storage.Add(storage.Event{ID: storage.EventID(id), Title: title})
 }
-
-// TODO
